@@ -28,6 +28,8 @@ public partial class CharacterViewModel {
 
     public override bool ComputeShouldJump()
     {
-        return IsOnTheGround && JumpIntention == JumpIntention.Jump;
+        return !JumpLocked
+            && (IsOnTheGround || JumpsPerformed < 4)
+            && JumpIntention == JumpIntention.Jump;
     }
 }
