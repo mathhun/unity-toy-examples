@@ -9,7 +9,8 @@ using UnityEngine;
 
 public class CharacterController : CharacterControllerBase {
     
-    public override void InitializeCharacter(CharacterViewModel character) {
+    public override void InitializeCharacter(CharacterViewModel character)
+    {
         character.JumpStateProperty.Subscribe(state => JumpStateChanged(character, state));
     }
 
@@ -25,5 +26,11 @@ public class CharacterController : CharacterControllerBase {
                 .Timer(TimeSpan.FromMilliseconds(100))
                 .Subscribe(l => { character.JumpLocked = false; });
         }
+    }
+
+    public override void PickUpCoin(CharacterViewModel character)
+    {
+        base.PickUpCoin(character);
+        character.CoinsCollected++;
     }
 }
