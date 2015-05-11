@@ -15,6 +15,21 @@ public class LevelRootController : LevelRootControllerBase {
             .Where(c => c.Action == NotifyCollectionChangedAction.Add)
             .Select(c => c.NewItems[0] as CoinViewModel)
             .Subscribe(coin => CoinAdded(levelRoot, coin));
+
+        levelRoot.PlayerProperty
+            .Where(player => player != null)
+            .Subscribe(player => NewPlayerSet(levelRoot, player));
+    }
+
+    private void NewPlayerSet(LevelRootViewModel levelRoot, CharacterViewModel player)
+    {
+        player.IsAliveProperty
+            .Where(isAlive => isAlive == false)
+            .Subscribe(_ => this.ExecuteCommand(levelRoot.LoseGame))
+            .DisposeWhenChanged(levelRoot.PlayerProperty);
+
+        player.FinishReached.Subscribe(_ => this.ExecuteCommand(levelRoot.WinGame))
+            .DisposeWhenChanged(levelRoot.PlayerProperty);
     }
 
     private void CoinAdded(LevelRootViewModel levelRoot, CoinViewModel coin)
@@ -23,5 +38,11 @@ public class LevelRootController : LevelRootControllerBase {
         {
             levelRoot.Coins.Remove(coin);
         });
+    }
+
+    public override void Restart(LevelRootViewModel levelRoot)
+    {
+        base.Restart(levelRoot);
+        GameManager.TransitionLevel<LevelSceneManager>(scenemanager => {}, "Assets");
     }
 }
