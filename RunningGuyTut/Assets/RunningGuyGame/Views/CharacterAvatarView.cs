@@ -28,6 +28,16 @@ public partial class CharacterAvatarView {
         base.OnInTheAir();
     }
 
+    public override void Bind()
+    {
+        base.Bind();
+        this.BindViewTrigger2DWith<CoinView>(CollisionEventType.Enter, coinview =>
+        {
+            coinview.ExecutePickUp();
+            ExecutePickUpCoin();
+        });
+    }
+
     /// Subscribes to the property and is notified anytime the value changes.
     public override void IsNotOnTheGroundChanged(Boolean value) {
         base.IsNotOnTheGroundChanged(value);

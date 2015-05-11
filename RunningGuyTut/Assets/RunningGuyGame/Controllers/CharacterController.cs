@@ -26,4 +26,10 @@ public class CharacterController : CharacterControllerBase {
                 .Subscribe(l => { character.JumpLocked = false; });
         }
     }
+
+    public override void PickUpCoin(CharacterViewModel character)
+    {
+        base.PickUpCoin(character);
+        character.CoinsCollected++;
+    }
 }
