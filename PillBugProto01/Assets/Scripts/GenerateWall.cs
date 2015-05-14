@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UniRx;
+using System;
 
 public class GenerateWall : MonoBehaviour
 {
@@ -10,12 +11,16 @@ public class GenerateWall : MonoBehaviour
 
     void Awake()
     {
+        IObservable<long> intervalStream = Observable.Interval(TimeSpan.FromMilliseconds(100));
         IObservable<long> updateStream = Observable.EveryUpdate();
         updateStream
             .Where(_ => Input.GetMouseButtonDown(0))
             .Select(_ => 1)
             .Scan((acc, current) => acc + current)
             .Subscribe(clickCount => Debug.Log(clickCount));
+
+        updateStream
+            .Subscribe(e => Debug.Log(e));
     }
 
 	void Update()
