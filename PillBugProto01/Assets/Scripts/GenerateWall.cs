@@ -60,12 +60,23 @@ public class GenerateWall : MonoBehaviour
 
     void InstantiateWalls(List<Vector2> pos)
     {
+        GameObject prev = null;
         for (var i = 0; i < pos.Count - 1; i++) {
-            InstantiateWall(pos[i], pos[i + 1]);
+            GameObject obj = InstantiateWall(pos[i], pos[i + 1]);
+
+            if (prev != null) {
+                //prev.AddComponent<HingeJoint2D>();
+                //HingeJoint2D hinge = prev.GetComponent<HingeJoint2D>();
+                //hinge.anchor = pos[i];
+                //Debug.Log(hinge);
+                //hinge.connectedBody = obj.GetComponent<Rigidbody2D>();
+            }
+
+            prev = obj;
         }
     }
 
-    void InstantiateWall(Vector2 v1, Vector2 v2)
+    GameObject InstantiateWall(Vector2 v1, Vector2 v2)
     {
         Vector2 vec = v2 - v1;
         Vector2 pos = vec / 2.0f + v1;
@@ -75,5 +86,7 @@ public class GenerateWall : MonoBehaviour
         newWall.transform.position = pos;
         newWall.transform.rotation = Quaternion.FromToRotation(Vector3.up, vec);
         newWall.transform.localScale = new Vector3(1.0f, vec.magnitude * 0.7f, 1.0f);
+
+        return newWall;
     }
 }
