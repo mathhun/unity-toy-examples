@@ -65,10 +65,10 @@ public class GenerateWall : MonoBehaviour
             GameObject obj = InstantiateWall(pos[i], pos[i + 1]);
 
             if (prev != null) {
-                //prev.AddComponent<HingeJoint2D>();
-                //HingeJoint2D hinge = prev.GetComponent<HingeJoint2D>();
-                //hinge.anchor = pos[i];
-                //Debug.Log(hinge);
+                prev.AddComponent<HingeJoint2D>();
+                HingeJoint2D hinge = prev.GetComponent<HingeJoint2D>();
+                hinge.anchor = pos[i];
+                Debug.Log(hinge);
                 //hinge.connectedBody = obj.GetComponent<Rigidbody2D>();
             }
 
