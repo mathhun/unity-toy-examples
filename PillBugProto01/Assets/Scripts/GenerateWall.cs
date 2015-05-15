@@ -8,13 +8,13 @@ public class GenerateWall : MonoBehaviour
 {
     public GameObject wall;
     public float intervalSec = 0.1f;
-    public bool hasGeneratedWall = false;
+    public static bool hasGeneratedWall = false;
 
     private float nextCheckTime;
     private bool isDragging = false;
     private List<Vector2> positions = new List<Vector2>();
 
-    void Awake()
+    void Start()
     {
     }
 
