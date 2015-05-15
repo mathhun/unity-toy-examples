@@ -7,48 +7,32 @@ using System;
 public class GenerateWall : MonoBehaviour
 {
     public GameObject wall;
-
-    //private Vector2 start = new Vector2(0.0f, 0.0f);
-    //private Vector2 end = new Vector2(0.0f, 0.0f);
-
     public float intervalSec = 0.1f;
+    public bool hasGeneratedWall = false;
+
     private float nextCheckTime;
-    //private bool doneGenerating = false;
     private bool isDragging = false;
     private List<Vector2> positions = new List<Vector2>();
 
     void Awake()
     {
-        //IObservable<long> updateStream = Observable.EveryUpdate();
-        //updateStream
-        //    .Where(_ => Input.GetMouseButtonDown(0))
-        //    .Select(_ => 1)
-        //    .Scan((acc, current) => acc + current)
-        //    .Subscribe(clickCount => Debug.Log(clickCount));
     }
 
 	void Update()
     {
         if (Input.GetMouseButtonDown(0)) {
-            //start = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            //Debug.Log(start);
-
             positions.Add(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             isDragging = true;
         }
 
         if (Input.GetMouseButtonUp(0)) {
-            //end = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            //Debug.Log(end);
-
             positions.Add(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
-            //InstantiateWall(start, end);
             InstantiateWalls(positions);
             positions = new List<Vector2>();
 
             isDragging = false;
-            //doneGenerating = true;
+            hasGeneratedWall = true;
         }
 
         if (isDragging && Time.time >= nextCheckTime) {
@@ -65,10 +49,10 @@ public class GenerateWall : MonoBehaviour
             GameObject obj = InstantiateWall(pos[i], pos[i + 1]);
 
             if (prev != null) {
-                prev.AddComponent<HingeJoint2D>();
-                HingeJoint2D hinge = prev.GetComponent<HingeJoint2D>();
-                hinge.anchor = pos[i];
-                Debug.Log(hinge);
+                //prev.AddComponent<HingeJoint2D>();
+                //HingeJoint2D hinge = prev.GetComponent<HingeJoint2D>();
+                //hinge.anchor = pos[i];
+                //Debug.Log(hinge);
                 //hinge.connectedBody = obj.GetComponent<Rigidbody2D>();
             }
 
