@@ -13,9 +13,17 @@ public class GenerateWall : MonoBehaviour
     private float nextCheckTime;
     private bool isDragging = false;
     private List<Vector2> positions = new List<Vector2>();
+    private SceneManager sceneManager;
 
     void Start()
     {
+        GameObject sceneManagerObject = GameObject.FindWithTag("SceneManager");
+        if (sceneManagerObject != null) {
+            sceneManager = sceneManagerObject.GetComponent<SceneManager>();
+        }
+        if (sceneManager == null) {
+            Debug.Log("Cannot find 'SceneManager' script");
+        }
     }
 
 	void Update()
@@ -33,12 +41,19 @@ public class GenerateWall : MonoBehaviour
 
             isDragging = false;
             hasGeneratedWall = true;
+
+            sceneManager.ProceedAllBugs();
         }
 
         if (isDragging && Time.time >= nextCheckTime) {
             nextCheckTime = Time.time + intervalSec;
 
             positions.Add(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        }
+
+        if (hasGeneratedWall && Input.GetMouseButtonDown(0)) {
+            Debug.Log("reset");
+            sceneManager.ResetAllBugs();
         }
 	}
 

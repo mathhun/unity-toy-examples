@@ -1,24 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SceneManager : MonoBehaviour
 {
-    // initial position & rotation
-    public static GameObject bug;
+    public GameObject bugTemplate;
+    private GameObject[] bugs;
+    private List<Vector3> initial_pos;
 
-    public static Vector3[] initial_position;
-    public static float[] initial_rotation_z;
-
-	void Start() {
-	}
-
-	void Update() {
-	}
-
-    public static void InstantiateBugs()
+    void Start()
     {
-        for (int i = 0; i < initial_position.Length; i++) {
-            Instantiate(bug, initial_position[i], Quaternion.AngleAxis(initial_rotation_z[i], Vector3.up));
+        bugs = GameObject.FindGameObjectsWithTag("Bug");
+
+        initial_pos = new List<Vector3>();
+        foreach (GameObject bug in bugs) {
+            initial_pos.Add(bug.GetComponent<Bug>().transform.position);
+        }
+    }
+
+    public void ProceedAllBugs()
+    {
+        foreach (GameObject bug in bugs) {
+            bug.GetComponent<Bug>().Proceed();
+        }
+    }
+
+    public void ResetAllBugs()
+    {
+        KillAllBugs();
+        InitializeAllBugs();
+    }
+
+    private void KillAllBugs()
+    {
+        foreach (GameObject bug in bugs) {
+            Destroy(bug);
+        }
+    }
+
+    private void InitializeAllBugs()
+    {
+        for (int i = 0; i < bugs.Length; i++) {
+            Instantiate(bugTemplate, initial_pos[i], Quaternion.identity);
         }
     }
 }

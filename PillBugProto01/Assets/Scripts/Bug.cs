@@ -19,21 +19,12 @@ public class Bug : MonoBehaviour
 
     private BUG_STATE state;
 
-    void Start()
-    {
-        InstantiateBugs();
-    }
-
 	void Update()
     {
         if (state == BUG_STATE.WILL_TURN_RIGHT || state == BUG_STATE.WILL_TURN_LEFT) {
             transform.position += movement;
         } else if (state == BUG_STATE.WILL_TURN_RIGHT || state == BUG_STATE.WILL_TURN_LEFT) {
             transform.position += movement;
-        }
-
-        if (state == BUG_STATE.STOP && GenerateWall.hasGeneratedWall) {
-            Proceed();
         }
 	}
 
@@ -51,32 +42,6 @@ public class Bug : MonoBehaviour
     public void Proceed()
     {
         state = BUG_STATE.WILL_TURN_RIGHT;
-    }
-
-    // Reset bugs with their initial settings.
-    // Called when user tapped while bugs are moving, or when user fails (all bugs disappeared).
-    public void ResetAll()
-    {
-        KillBugs();
-        InstantiateBugs();
-        state = BUG_STATE.STOP;
-    }
-
-    // Destroy all existing bugs
-    private void KillBugs()
-    {
-        GameObject[] bugs;
-
-        bugs = GameObject.FindGameObjectsWithTag("Bug");
-        foreach (GameObject bug in bugs) {
-            Destroy(bug);
-        }
-    }
-
-    // Instantiate bugs in their initial positions
-    private void InstantiateBugs()
-    {
-        SceneManager.InstantiateBugs();
-        state = BUG_STATE.STOP;
+        Debug.Log("proceeding");
     }
 }
