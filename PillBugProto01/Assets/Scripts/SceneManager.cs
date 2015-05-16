@@ -4,17 +4,21 @@ using System.Collections.Generic;
 
 public class SceneManager : MonoBehaviour
 {
-    public GameObject bugTemplate;
+    public GameObject bugPrefab;
     private GameObject[] bugs;
-    private List<Vector3> initial_pos;
+    private List<Vector3> initial_position;
+    private List<Quaternion> initial_quaternion;
 
     void Start()
     {
         bugs = GameObject.FindGameObjectsWithTag("Bug");
 
-        initial_pos = new List<Vector3>();
+        initial_position = new List<Vector3>();
+        initial_quaternion = new List<Quaternion>();
+
         foreach (GameObject bug in bugs) {
-            initial_pos.Add(bug.GetComponent<Bug>().transform.position);
+            initial_position.Add(bug.GetComponent<Bug>().transform.position);
+            initial_quaternion.Add(bug.GetComponent<Bug>().transform.rotation);
         }
     }
 
@@ -41,7 +45,7 @@ public class SceneManager : MonoBehaviour
     private void InitializeAllBugs()
     {
         for (int i = 0; i < bugs.Length; i++) {
-            Instantiate(bugTemplate, initial_pos[i], Quaternion.identity);
+            GameObject bug = (GameObject)Instantiate(bugPrefab, initial_position[i], initial_quaternion[i]);
         }
     }
 }

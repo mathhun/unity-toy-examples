@@ -52,7 +52,7 @@ public class GenerateWall : MonoBehaviour
         }
 
         if (hasGeneratedWall && Input.GetMouseButtonDown(0)) {
-            Debug.Log("reset");
+            //Debug.Log("reset");
             sceneManager.ResetAllBugs();
         }
 	}

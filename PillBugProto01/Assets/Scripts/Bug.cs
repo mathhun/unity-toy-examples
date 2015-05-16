@@ -42,6 +42,6 @@ public class Bug : MonoBehaviour
     public void Proceed()
     {
         state = BUG_STATE.WILL_TURN_RIGHT;
-        Debug.Log("proceeding");
+        //Debug.Log("proceeding");
     }
 }
