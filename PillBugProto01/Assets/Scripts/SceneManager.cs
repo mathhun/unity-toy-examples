@@ -45,7 +45,7 @@ public class SceneManager : MonoBehaviour
     private void InitializeAllBugs()
     {
         for (int i = 0; i < bugs.Length; i++) {
-            GameObject bug = (GameObject)Instantiate(bugPrefab, initial_position[i], initial_quaternion[i]);
+            Instantiate(bugPrefab, initial_position[i], initial_quaternion[i]);
         }
     }
 }
