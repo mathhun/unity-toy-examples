@@ -8,7 +8,9 @@ public class BugManager : MonoBehaviour
     private GameObject[] bugs;
     private List<Vector3> initial_position;
     private List<Quaternion> initial_quaternion;
+
     private int active_bug_count;
+    private int success_count;
 
     private GameController gameController;
 
@@ -33,6 +35,8 @@ public class BugManager : MonoBehaviour
         if (gameController == null) {
             Debug.Log("Cannot find 'gameController' script");
         }
+
+        success_count = 0;
     }
 
     public void ProceedAllBugs()
@@ -55,6 +59,16 @@ public class BugManager : MonoBehaviour
         if (active_bug_count == 0) {
             gameController.Fail();
         }
+    }
+
+    public void IncrementSuccessCount()
+    {
+        success_count++;
+    }
+
+    public bool IsSuccess()
+    {
+        return success_count == bugs.Length;
     }
 
     private void KillAllBugs()

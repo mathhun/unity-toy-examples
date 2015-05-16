@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     };
 
     public float suspendSec = 2.0f;
+    public GUIText successText;
 
     private GAME_STATE state;
     private float suspendEndTime;
@@ -21,6 +22,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         state = GAME_STATE.INIT;
+        successText.text = "";
 
         // scene manager
         GameObject bugManagerObject = GameObject.FindWithTag("BugManager");
@@ -54,6 +56,11 @@ public class GameController : MonoBehaviour
         bugManager.ProceedAllBugs();
     }
 
+    public void Succeed()
+    {
+        state = GAME_STATE.SUCCEED;
+    }
+
     public void Fail()
     {
         state = GAME_STATE.FAIL;
@@ -63,6 +70,14 @@ public class GameController : MonoBehaviour
     public void ResetLevel()
     {
         Application.LoadLevel(Application.loadedLevel);
+    }
+
+    public void IncrementSuccessCount()
+    {
+        bugManager.IncrementSuccessCount();
+        if (bugManager.IsSuccess()) {
+            successText.text = "CLEAR!";
+        }
     }
 
     public void DecrementBugCount()

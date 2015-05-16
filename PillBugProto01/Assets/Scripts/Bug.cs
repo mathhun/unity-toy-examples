@@ -60,6 +60,7 @@ public class Bug : MonoBehaviour
     {
         if (other.gameObject.tag == "Goal") {
             movement = new Vector3(0f, 0f, 0f);
+            gameController.IncrementSuccessCount();
 
             Observable.Timer(TimeSpan.FromSeconds(delaySec))
                 .Subscribe(_ => Destroy(this.gameObject));
@@ -70,6 +71,5 @@ public class Bug : MonoBehaviour
     public void Proceed()
     {
         state = BUG_STATE.WILL_TURN_RIGHT;
-        //Debug.Log("proceeding");
     }
 }
