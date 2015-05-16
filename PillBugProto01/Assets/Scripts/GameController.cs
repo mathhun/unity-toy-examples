@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour
     private GAME_STATE state;
     private float suspendEndTime;
 
-    private SceneManager sceneManager;
+    private BugManager bugManager;
     private WallManager wallManager;
 
     void Start()
@@ -23,12 +23,12 @@ public class GameController : MonoBehaviour
         state = GAME_STATE.INIT;
 
         // scene manager
-        GameObject sceneManagerObject = GameObject.FindWithTag("SceneManager");
-        if (sceneManagerObject != null) {
-            sceneManager = sceneManagerObject.GetComponent<SceneManager>();
+        GameObject bugManagerObject = GameObject.FindWithTag("BugManager");
+        if (bugManagerObject != null) {
+            bugManager = bugManagerObject.GetComponent<BugManager>();
         }
-        if (sceneManager == null) {
-            Debug.Log("Cannot find 'SceneManager' script");
+        if (bugManager == null) {
+            Debug.Log("Cannot find 'BugManager' script");
         }
 
         // wall manager
@@ -44,21 +44,29 @@ public class GameController : MonoBehaviour
     void Update()
     {
         if (state == GAME_STATE.FAIL && Time.time >= suspendEndTime) {
-            state = GAME_STATE.INIT;
-
-            sceneManager.ResetAllBugs();
-            wallManager.ResetWalls();
+            ResetLevel();
         }
     }
 
     public void ReceivedUserInput()
     {
         state = GAME_STATE.BUGS_PROCEED;
+        bugManager.ProceedAllBugs();
     }
 
     public void Fail()
     {
         state = GAME_STATE.FAIL;
         suspendEndTime = Time.time + suspendSec;
+    }
+
+    public void ResetLevel()
+    {
+        Application.LoadLevel(Application.loadedLevel);
+    }
+
+    public void DecrementBugCount()
+    {
+        bugManager.DecrementBugCount();
     }
 }

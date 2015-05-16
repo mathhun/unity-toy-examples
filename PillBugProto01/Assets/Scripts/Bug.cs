@@ -20,18 +20,17 @@ public class Bug : MonoBehaviour
     public float margin = 0.04f;
 
     private BUG_STATE state;
-
-    private SceneManager sceneManager;
+    private GameController gameController;
 
     void Start()
     {
-        // scene manager
-        GameObject sceneManagerObject = GameObject.FindWithTag("SceneManager");
-        if (sceneManagerObject != null) {
-            sceneManager = sceneManagerObject.GetComponent<SceneManager>();
+        // game controller
+        GameObject gameControllerObject = GameObject.FindWithTag("GameController");
+        if (gameControllerObject != null) {
+            gameController = gameControllerObject.GetComponent<GameController>();
         }
-        if (sceneManager == null) {
-            Debug.Log("Cannot find 'SceneManager' script");
+        if (gameController == null) {
+            Debug.Log("Cannot find 'gameController' script");
         }
     }
 
@@ -45,7 +44,7 @@ public class Bug : MonoBehaviour
 
         if (state != BUG_STATE.DISAPPEARED && isOutOfScreen()) {
             state = BUG_STATE.DISAPPEARED;
-            sceneManager.DecrementBugCount();
+            gameController.DecrementBugCount();
         }
 	}
 

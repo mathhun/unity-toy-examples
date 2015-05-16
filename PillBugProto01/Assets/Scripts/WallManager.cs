@@ -8,28 +8,17 @@ public class WallManager : MonoBehaviour
 {
     public GameObject wall;
     public float intervalSec = 0.1f;
-    public static bool hasGeneratedWall = false;
+    public static bool hasGeneratedWall;
 
     private float nextCheckTime;
-    private bool isDragging = false;
+    private bool isDragging;
     private List<Vector2> positions = new List<Vector2>();
 
-    private SceneManager sceneManager;
     private GameController gameController;
-
     private List<GameObject> generatedWalls;
 
     void Start()
     {
-        // scene manager
-        GameObject sceneManagerObject = GameObject.FindWithTag("SceneManager");
-        if (sceneManagerObject != null) {
-            sceneManager = sceneManagerObject.GetComponent<SceneManager>();
-        }
-        if (sceneManager == null) {
-            Debug.Log("Cannot find 'SceneManager' script");
-        }
-
         // game controller
         GameObject gameControllerObject = GameObject.FindWithTag("GameController");
         if (gameControllerObject != null) {
@@ -39,6 +28,8 @@ public class WallManager : MonoBehaviour
             Debug.Log("Cannot find 'gameController' script");
         }
 
+        hasGeneratedWall = false;
+        isDragging = false;
         generatedWalls = new List<GameObject>();
     }
 
@@ -60,7 +51,6 @@ public class WallManager : MonoBehaviour
             isDragging = false;
             hasGeneratedWall = true;
 
-            sceneManager.ProceedAllBugs();
             gameController.ReceivedUserInput();
         }
 
@@ -71,7 +61,8 @@ public class WallManager : MonoBehaviour
 
         // reset bugs
         if (hasGeneratedWall && Input.GetMouseButtonDown(0)) {
-            sceneManager.ResetAllBugs();
+            gameController.ResetLevel();
+            hasGeneratedWall = false;
         }
 	}
 
