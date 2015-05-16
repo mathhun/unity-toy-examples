@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UniRx;
 using System;
 
-public class GenerateWall : MonoBehaviour
+public class WallManager : MonoBehaviour
 {
     public GameObject wall;
     public float intervalSec = 0.1f;
@@ -13,10 +13,15 @@ public class GenerateWall : MonoBehaviour
     private float nextCheckTime;
     private bool isDragging = false;
     private List<Vector2> positions = new List<Vector2>();
+
     private SceneManager sceneManager;
+    private GameController gameController;
+
+    private List<GameObject> generatedWalls;
 
     void Start()
     {
+        // scene manager
         GameObject sceneManagerObject = GameObject.FindWithTag("SceneManager");
         if (sceneManagerObject != null) {
             sceneManager = sceneManagerObject.GetComponent<SceneManager>();
@@ -24,15 +29,28 @@ public class GenerateWall : MonoBehaviour
         if (sceneManager == null) {
             Debug.Log("Cannot find 'SceneManager' script");
         }
+
+        // game controller
+        GameObject gameControllerObject = GameObject.FindWithTag("GameController");
+        if (gameControllerObject != null) {
+            gameController = gameControllerObject.GetComponent<GameController>();
+        }
+        if (gameController == null) {
+            Debug.Log("Cannot find 'gameController' script");
+        }
+
+        generatedWalls = new List<GameObject>();
     }
 
 	void Update()
     {
+        // mouse input start
         if (Input.GetMouseButtonDown(0)) {
             positions.Add(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             isDragging = true;
         }
 
+        // mouse input end
         if (Input.GetMouseButtonUp(0)) {
             positions.Add(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
@@ -43,16 +61,16 @@ public class GenerateWall : MonoBehaviour
             hasGeneratedWall = true;
 
             sceneManager.ProceedAllBugs();
+            gameController.ReceivedUserInput();
         }
 
         if (isDragging && Time.time >= nextCheckTime) {
             nextCheckTime = Time.time + intervalSec;
-
             positions.Add(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
 
+        // reset bugs
         if (hasGeneratedWall && Input.GetMouseButtonDown(0)) {
-            //Debug.Log("reset");
             sceneManager.ResetAllBugs();
         }
 	}
@@ -62,6 +80,7 @@ public class GenerateWall : MonoBehaviour
         GameObject prev = null;
         for (var i = 0; i < pos.Count - 1; i++) {
             GameObject obj = InstantiateWall(pos[i], pos[i + 1]);
+            generatedWalls.Add(obj);
 
             if (prev != null) {
                 //prev.AddComponent<HingeJoint2D>();
@@ -87,5 +106,12 @@ public class GenerateWall : MonoBehaviour
         newWall.transform.localScale = new Vector3(1.0f, vec.magnitude * 0.7f, 1.0f);
 
         return newWall;
+    }
+
+    public void ResetWalls()
+    {
+        foreach (GameObject wall in generatedWalls) {
+            Destroy(wall);
+        }
     }
 }

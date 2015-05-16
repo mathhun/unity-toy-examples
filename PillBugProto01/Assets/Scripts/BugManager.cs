@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class SceneManager : MonoBehaviour
+public class BugManager : MonoBehaviour
 {
     public GameObject bugPrefab;
     private GameObject[] bugs;
