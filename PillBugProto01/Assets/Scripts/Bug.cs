@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
-using UniRx;
 
 public class Bug : MonoBehaviour
 {
@@ -68,18 +67,13 @@ public class Bug : MonoBehaviour
 
     private void Succeed()
     {
-        state = BUG_STATE.REACHED_GOAL;
-        movement = new Vector3(0f, 0f, 0f);
+        Destroy(this.gameObject);
         gameController.IncrementSucceededCount();
-
-        Observable.Timer(TimeSpan.FromSeconds(delaySec))
-            .Subscribe(_ => Destroy(this.gameObject));
     }
 
     private void Fail()
     {
-        state = BUG_STATE.DISAPPEARED;
-        movement = new Vector3(0f, 0f, 0f);
+        Destroy(this.gameObject);
         gameController.IncrementFailedCount();
     }
 }
