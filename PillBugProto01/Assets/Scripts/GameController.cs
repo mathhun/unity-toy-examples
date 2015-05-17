@@ -21,7 +21,6 @@ public class GameController : MonoBehaviour
     public float failedDelaySec = 2.0f;
 
     private GAME_STATE state;
-    private float suspendEndTime;
 
     private void Start()
     {

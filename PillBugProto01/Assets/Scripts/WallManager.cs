@@ -72,7 +72,7 @@ public class WallManager : MonoBehaviour
         Vector2 vec = v2 - v1;
         Vector2 pos = vec / 2.0f + v1;
 
-        GameObject newWall = (GameObject)Instantiate(wall);
+        GameObject newWall = Instantiate(wall);
         newWall.transform.position = pos;
         newWall.transform.rotation = Quaternion.FromToRotation(Vector3.up, vec);
         newWall.transform.localScale = new Vector3(1.0f, vec.magnitude * 0.7f, 1.0f);
