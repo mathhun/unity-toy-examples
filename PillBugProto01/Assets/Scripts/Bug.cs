@@ -43,8 +43,7 @@ public class Bug : MonoBehaviour
         }
 
         if (state != BUG_STATE.DISAPPEARED && isOutOfScreen()) {
-            state = BUG_STATE.DISAPPEARED;
-            gameController.DecrementBugCount();
+            Fail();
         }
 	}
 
@@ -59,11 +58,7 @@ public class Bug : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "Goal") {
-            movement = new Vector3(0f, 0f, 0f);
-            gameController.IncrementSuccessCount();
-
-            Observable.Timer(TimeSpan.FromSeconds(delaySec))
-                .Subscribe(_ => Destroy(this.gameObject));
+            Succeed();
         }
     }
 
@@ -71,5 +66,22 @@ public class Bug : MonoBehaviour
     public void Proceed()
     {
         state = BUG_STATE.WILL_TURN_RIGHT;
+    }
+
+    private void Succeed()
+    {
+        state = BUG_STATE.REACHED_GOAL;
+        movement = new Vector3(0f, 0f, 0f);
+        gameController.IncrementSucceededCount();
+
+        Observable.Timer(TimeSpan.FromSeconds(delaySec))
+            .Subscribe(_ => Destroy(this.gameObject));
+    }
+
+    private void Fail()
+    {
+        state = BUG_STATE.DISAPPEARED;
+        movement = new Vector3(0f, 0f, 0f);
+        gameController.IncrementFailedCount();
     }
 }

@@ -6,16 +6,20 @@ using System;
 
 public class WallManager : MonoBehaviour
 {
+    enum INPUT_STATE {
+        INIT,
+        BUILDING_WALL,
+        HAS_BUILT_WALL,
+        SUSPEND,
+    };
+
     public GameObject wall;
     public float intervalSec = 0.1f;
-    public static bool hasGeneratedWall;
-
-    private float nextCheckTime;
-    private bool isDragging;
-    private List<Vector2> positions = new List<Vector2>();
 
     private GameController gameController;
-    private List<GameObject> generatedWalls;
+    private INPUT_STATE state;
+    private List<Vector2> positions;
+    private float nextCheckTime;
 
     void Start()
     {
@@ -28,68 +32,56 @@ public class WallManager : MonoBehaviour
             Debug.Log("Cannot find 'gameController' script");
         }
 
-        hasGeneratedWall = false;
-        isDragging = false;
-        generatedWalls = new List<GameObject>();
+        positions = new List<Vector2>();
+        state = INPUT_STATE.INIT;
     }
 
 	void Update()
     {
-        // mouse input start
-        if (Input.GetMouseButtonDown(0)) {
-            positions.Add(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            isDragging = true;
+        if (state == INPUT_STATE.SUSPEND) {
+            return;
         }
 
-        // mouse input end
-        if (Input.GetMouseButtonUp(0)) {
+        if (state == INPUT_STATE.INIT && Input.GetMouseButtonDown(0)) {
             positions.Add(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            state = INPUT_STATE.BUILDING_WALL;
+        }
 
+        if (state == INPUT_STATE.BUILDING_WALL && Input.GetMouseButtonUp(0)) {
+            positions.Add(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             InstantiateWalls(positions);
-            positions = new List<Vector2>();
 
-            isDragging = false;
-            hasGeneratedWall = true;
-
+            state = INPUT_STATE.HAS_BUILT_WALL;
             gameController.ReceivedUserInput();
         }
 
-        if (isDragging && Time.time >= nextCheckTime) {
+        if (state == INPUT_STATE.BUILDING_WALL && Time.time >= nextCheckTime) {
             nextCheckTime = Time.time + intervalSec;
             positions.Add(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
 
-        // reset bugs
-        if (hasGeneratedWall && Input.GetMouseButtonDown(0)) {
+        // reset bugs && walls
+        if (state == INPUT_STATE.HAS_BUILT_WALL && Input.GetMouseButtonDown(0)) {
             gameController.ResetLevel();
-            hasGeneratedWall = false;
         }
 	}
 
-    void InstantiateWalls(List<Vector2> pos)
+    public void SuspendInput()
     {
-        GameObject prev = null;
+        state = INPUT_STATE.SUSPEND;
+    }
+
+    private void InstantiateWalls(List<Vector2> pos)
+    {
         for (var i = 0; i < pos.Count - 1; i++) {
-            GameObject obj = InstantiateWall(pos[i], pos[i + 1]);
-            generatedWalls.Add(obj);
-
-            if (prev != null) {
-                //prev.AddComponent<HingeJoint2D>();
-                //HingeJoint2D hinge = prev.GetComponent<HingeJoint2D>();
-                //hinge.anchor = pos[i];
-                //Debug.Log(hinge);
-                //hinge.connectedBody = obj.GetComponent<Rigidbody2D>();
-            }
-
-            prev = obj;
+            InstantiateWall(pos[i], pos[i + 1]);
         }
     }
 
-    GameObject InstantiateWall(Vector2 v1, Vector2 v2)
+    private GameObject InstantiateWall(Vector2 v1, Vector2 v2)
     {
         Vector2 vec = v2 - v1;
         Vector2 pos = vec / 2.0f + v1;
-        //Debug.Log(pos);
 
         GameObject newWall = (GameObject)Instantiate(wall);
         newWall.transform.position = pos;
@@ -97,12 +89,5 @@ public class WallManager : MonoBehaviour
         newWall.transform.localScale = new Vector3(1.0f, vec.magnitude * 0.7f, 1.0f);
 
         return newWall;
-    }
-
-    public void ResetWalls()
-    {
-        foreach (GameObject wall in generatedWalls) {
-            Destroy(wall);
-        }
     }
 }

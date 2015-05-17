@@ -6,27 +6,15 @@ public class BugManager : MonoBehaviour
 {
     public GameObject bugPrefab;
     private GameObject[] bugs;
-    private List<Vector3> initial_position;
-    private List<Quaternion> initial_quaternion;
 
     private int active_bug_count;
-    private int success_count;
+    private int succeeded_count;
+    private int failed_count;
 
     private GameController gameController;
 
     void Start()
     {
-        bugs = GameObject.FindGameObjectsWithTag("Bug");
-        active_bug_count = bugs.Length;
-
-        initial_position = new List<Vector3>();
-        initial_quaternion = new List<Quaternion>();
-
-        foreach (GameObject bug in bugs) {
-            initial_position.Add(bug.GetComponent<Bug>().transform.position);
-            initial_quaternion.Add(bug.GetComponent<Bug>().transform.rotation);
-        }
-
         // game controller
         GameObject gameControllerObject = GameObject.FindWithTag("GameController");
         if (gameControllerObject != null) {
@@ -36,7 +24,11 @@ public class BugManager : MonoBehaviour
             Debug.Log("Cannot find 'gameController' script");
         }
 
-        success_count = 0;
+        bugs = GameObject.FindGameObjectsWithTag("Bug");
+
+        active_bug_count = bugs.Length;
+        succeeded_count = 0;
+        failed_count = 0;
     }
 
     public void ProceedAllBugs()
@@ -46,46 +38,25 @@ public class BugManager : MonoBehaviour
         }
     }
 
-    public void ResetAllBugs()
+    public void IncrementSucceededCount()
     {
-        KillAllBugs();
-        InitializeAllBugs();
-    }
-
-    public void DecrementBugCount()
-    {
+        succeeded_count++;
         active_bug_count--;
-
-        if (active_bug_count == 0) {
-            gameController.Fail();
-        }
     }
 
-    public void IncrementSuccessCount()
+    public void IncrementFailedCount()
     {
-        success_count++;
+        failed_count++;
+        active_bug_count--;
     }
 
-    public bool IsSuccess()
+    public bool IsSucceeded()
     {
-        return success_count == bugs.Length;
+        return succeeded_count == bugs.Length;
     }
 
-    private void KillAllBugs()
+    public bool IsFailed()
     {
-        active_bug_count = 0;
-
-        foreach (GameObject bug in bugs) {
-            Destroy(bug);
-        }
-    }
-
-    private void InitializeAllBugs()
-    {
-        active_bug_count = bugs.Length;
-
-        for (int i = 0; i < bugs.Length; i++) {
-            Instantiate(bugPrefab, initial_position[i], initial_quaternion[i]);
-        }
+        return active_bug_count == 0 && !IsSucceeded();
     }
 }

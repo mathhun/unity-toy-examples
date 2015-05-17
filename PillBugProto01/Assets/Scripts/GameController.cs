@@ -15,16 +15,12 @@ public class GameController : MonoBehaviour
 
     private GAME_STATE state;
     private float suspendEndTime;
-
     private BugManager bugManager;
     private WallManager wallManager;
 
     void Start()
     {
-        state = GAME_STATE.INIT;
-        successText.text = "";
-
-        // scene manager
+        // bug manager
         GameObject bugManagerObject = GameObject.FindWithTag("BugManager");
         if (bugManagerObject != null) {
             bugManager = bugManagerObject.GetComponent<BugManager>();
@@ -41,6 +37,10 @@ public class GameController : MonoBehaviour
         if (wallManager == null) {
             Debug.Log("Cannot find 'WallManager' script");
         }
+
+        state = GAME_STATE.INIT;
+        Debug.Log("GAME_STATE = INIT");
+        successText.text = "";
     }
 
     void Update()
@@ -53,18 +53,24 @@ public class GameController : MonoBehaviour
     public void ReceivedUserInput()
     {
         state = GAME_STATE.BUGS_PROCEED;
+        Debug.Log("GAME_STATE = BUGS_PROCEED");
         bugManager.ProceedAllBugs();
     }
 
     public void Succeed()
     {
         state = GAME_STATE.SUCCEED;
+        successText.text = "CLEAR!";
+        Debug.Log("GAME_STATE = SUCCEED");
     }
 
     public void Fail()
     {
         state = GAME_STATE.FAIL;
         suspendEndTime = Time.time + suspendSec;
+        Debug.Log("GAME_STATE = FAIL");
+
+        wallManager.SuspendInput();
     }
 
     public void ResetLevel()
@@ -72,16 +78,21 @@ public class GameController : MonoBehaviour
         Application.LoadLevel(Application.loadedLevel);
     }
 
-    public void IncrementSuccessCount()
+    public void IncrementSucceededCount()
     {
-        bugManager.IncrementSuccessCount();
-        if (bugManager.IsSuccess()) {
-            successText.text = "CLEAR!";
+        bugManager.IncrementSucceededCount();
+        Debug.Log("Succeeded++");
+        if (bugManager.IsSucceeded()) {
+            Succeed();
         }
     }
 
-    public void DecrementBugCount()
+    public void IncrementFailedCount()
     {
-        bugManager.DecrementBugCount();
+        bugManager.IncrementFailedCount();
+        Debug.Log("Failed++");
+        if (bugManager.IsFailed()) {
+            Fail();
+        }
     }
 }
