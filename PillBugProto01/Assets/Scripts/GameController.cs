@@ -40,7 +40,7 @@ public class GameController : MonoBehaviour
     {
         state = GAME_STATE.BUGS_PROCEED;
         Debug.Log("GAME_STATE = BUGS_PROCEED");
-        bugManager.ProceedAllBugs();
+        bugManager.StartAll();
     }
 
     public void Succeed()

@@ -3,7 +3,6 @@ using System.Collections;
 
 public class BugManager : MonoBehaviour
 {
-    public GameObject bugPrefab;
     public GameController gameController;
 
     private GameObject[] bugs;
@@ -19,7 +18,7 @@ public class BugManager : MonoBehaviour
         failed_count = 0;
     }
 
-    public void ProceedAllBugs()
+    public void StartAll()
     {
         foreach (GameObject bug in bugs) {
             bug.GetComponent<Bug>().Proceed();
