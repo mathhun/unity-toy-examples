@@ -19,13 +19,13 @@ public class WallManager : MonoBehaviour
     private List<Vector2> positions;
     private float nextCheckTime;
 
-    void Start()
+    private void Start()
     {
         positions = new List<Vector2>();
         state = INPUT_STATE.INIT;
     }
 
-	void Update()
+    private void Update()
     {
         if (state == INPUT_STATE.SUSPEND) {
             return;
@@ -53,7 +53,7 @@ public class WallManager : MonoBehaviour
         if (state == INPUT_STATE.HAS_BUILT_WALL && Input.GetMouseButtonDown(0)) {
             gameController.ResetLevel();
         }
-	}
+    }
 
     public void SuspendInput()
     {

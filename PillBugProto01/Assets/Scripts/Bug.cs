@@ -20,7 +20,7 @@ public class Bug : MonoBehaviour
     private GameController gameController;
     private BUG_STATE state;
 
-    void Start()
+    private void Start()
     {
         // game controller
         GameObject gameControllerObject = GameObject.FindWithTag("GameController");
@@ -32,7 +32,7 @@ public class Bug : MonoBehaviour
         }
     }
 
-	void Update()
+    private void Update()
     {
         if (state == BUG_STATE.WILL_TURN_RIGHT || state == BUG_STATE.WILL_TURN_LEFT) {
             transform.position += movement;
@@ -43,9 +43,9 @@ public class Bug : MonoBehaviour
         if (state != BUG_STATE.DISAPPEARED && isOutOfScreen()) {
             Fail();
         }
-	}
+    }
 
-    bool isOutOfScreen()
+    private bool isOutOfScreen()
     {
         Vector3 pos = Camera.main.WorldToViewportPoint(transform.position);
         float n = 0 - margin;
@@ -53,7 +53,7 @@ public class Bug : MonoBehaviour
         return pos.x < n || pos.x > p || pos.y < n || pos.y > p;
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "Goal") {
             Succeed();

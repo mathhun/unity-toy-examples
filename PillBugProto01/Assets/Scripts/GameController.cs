@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour
     private GAME_STATE state;
     private float suspendEndTime;
 
-    void Start()
+    private void Start()
     {
         succeededText.text = "";
         failedText.text = "";
@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour
         Debug.Log("GAME_STATE = INIT");
     }
 
-    void Update()
+    private void Update()
     {
     }
 

@@ -11,7 +11,7 @@ public class BugManager : MonoBehaviour
     private int succeeded_count;
     private int failed_count;
 
-    void Start()
+    private void Start()
     {
         bugs = GameObject.FindGameObjectsWithTag("Bug");
         active_bug_count = bugs.Length;
