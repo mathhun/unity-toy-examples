@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+using UniRx;
 
 public class GameController : MonoBehaviour
 {
@@ -10,44 +12,28 @@ public class GameController : MonoBehaviour
         FAIL,
     };
 
-    public float suspendSec = 2.0f;
-    public GUIText successText;
+    public BugManager bugManager;
+    public WallManager wallManager;
+    public GUIText succeededText;
+    public GUIText failedText;
+
+    public float succeededDelaySec = 2.0f;
+    public float failedDelaySec = 2.0f;
 
     private GAME_STATE state;
     private float suspendEndTime;
-    private BugManager bugManager;
-    private WallManager wallManager;
 
     void Start()
     {
-        // bug manager
-        GameObject bugManagerObject = GameObject.FindWithTag("BugManager");
-        if (bugManagerObject != null) {
-            bugManager = bugManagerObject.GetComponent<BugManager>();
-        }
-        if (bugManager == null) {
-            Debug.Log("Cannot find 'BugManager' script");
-        }
-
-        // wall manager
-        GameObject wallManagerObject = GameObject.FindWithTag("WallManager");
-        if (wallManagerObject != null) {
-            wallManager = wallManagerObject.GetComponent<WallManager>();
-        }
-        if (wallManager == null) {
-            Debug.Log("Cannot find 'WallManager' script");
-        }
+        succeededText.text = "";
+        failedText.text = "";
 
         state = GAME_STATE.INIT;
         Debug.Log("GAME_STATE = INIT");
-        successText.text = "";
     }
 
     void Update()
     {
-        if (state == GAME_STATE.FAIL && Time.time >= suspendEndTime) {
-            ResetLevel();
-        }
     }
 
     public void ReceivedUserInput()
@@ -59,16 +45,26 @@ public class GameController : MonoBehaviour
 
     public void Succeed()
     {
+        succeededText.text = "CLEAR!";
+
         state = GAME_STATE.SUCCEED;
-        successText.text = "CLEAR!";
         Debug.Log("GAME_STATE = SUCCEED");
+
+        Observable.Timer(TimeSpan.FromSeconds(succeededDelaySec))
+            .Subscribe(_ => ResetLevel());
+
+        wallManager.SuspendInput();
     }
 
     public void Fail()
     {
+        failedText.text = "Game Over";
+
         state = GAME_STATE.FAIL;
-        suspendEndTime = Time.time + suspendSec;
         Debug.Log("GAME_STATE = FAIL");
+
+        Observable.Timer(TimeSpan.FromSeconds(failedDelaySec))
+            .Subscribe(_ => ResetLevel());
 
         wallManager.SuspendInput();
     }
@@ -82,6 +78,7 @@ public class GameController : MonoBehaviour
     {
         bugManager.IncrementSucceededCount();
         Debug.Log("Succeeded++");
+
         if (bugManager.IsSucceeded()) {
             Succeed();
         }
@@ -91,6 +88,7 @@ public class GameController : MonoBehaviour
     {
         bugManager.IncrementFailedCount();
         Debug.Log("Failed++");
+
         if (bugManager.IsFailed()) {
             Fail();
         }

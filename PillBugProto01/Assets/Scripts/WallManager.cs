@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UniRx;
-using System;
 
 public class WallManager : MonoBehaviour
 {
@@ -15,23 +13,14 @@ public class WallManager : MonoBehaviour
 
     public GameObject wall;
     public float intervalSec = 0.1f;
+    public GameController gameController;
 
-    private GameController gameController;
     private INPUT_STATE state;
     private List<Vector2> positions;
     private float nextCheckTime;
 
     void Start()
     {
-        // game controller
-        GameObject gameControllerObject = GameObject.FindWithTag("GameController");
-        if (gameControllerObject != null) {
-            gameController = gameControllerObject.GetComponent<GameController>();
-        }
-        if (gameController == null) {
-            Debug.Log("Cannot find 'gameController' script");
-        }
-
         positions = new List<Vector2>();
         state = INPUT_STATE.INIT;
     }

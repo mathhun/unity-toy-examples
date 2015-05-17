@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 using System;
 using UniRx;
 
@@ -17,10 +16,10 @@ public class Bug : MonoBehaviour
 
     public float delaySec = 0.5f;
     public Vector3 movement = new Vector3(0.02f, 0f, 0f);
-    public float margin = 0.04f;
+    public float margin = 0.1f;
 
-    private BUG_STATE state;
     private GameController gameController;
+    private BUG_STATE state;
 
     void Start()
     {
@@ -62,7 +61,6 @@ public class Bug : MonoBehaviour
         }
     }
 
-    // Set bugs state to `proceed`. Called when user has input a line
     public void Proceed()
     {
         state = BUG_STATE.WILL_TURN_RIGHT;
