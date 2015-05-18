@@ -200,11 +200,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 460110, guid: c61d3262627f34723b1c8125806736a9, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -.0155435521
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 460110, guid: c61d3262627f34723b1c8125806736a9, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 3.01551604
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 460110, guid: c61d3262627f34723b1c8125806736a9, type: 2}
       propertyPath: m_LocalPosition.z
@@ -300,6 +300,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1091615550}
   - 114: {fileID: 1091615549}
+  - 114: {fileID: 1091615551}
   m_Layer: 0
   m_Name: _GM
   m_TagString: Untagged
@@ -341,6 +342,18 @@ Transform:
   - {fileID: 1137205460}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &1091615551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1091615548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87c06a231fcf542058ffc43fe4246185, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  theSkin: {fileID: 11400000, guid: 7a1d67ae451f14edb904b4d1260fe61e, type: 2}
 --- !u!1 &1137205459
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,6 +363,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1137205460}
   - 61: {fileID: 1137205461}
+  - 114: {fileID: 1137205462}
   m_Layer: 0
   m_Name: RightWall
   m_TagString: Untagged
@@ -377,11 +391,22 @@ BoxCollider2D:
   m_GameObject: {fileID: 1137205459}
   m_Enabled: 1
   m_Material: {fileID: 6200000, guid: 25dd3f642ef284c379b78e5b5cde18c2, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
+--- !u!114 &1137205462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1137205459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43c25b78d3a4b44418c74f4e76f33e6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1143928911 stripped
 Transform:
   m_PrefabParentObject: {fileID: 407790, guid: 2526f369f56f54476b9f8712d41aa0b9, type: 2}
@@ -520,6 +545,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1434641566}
   - 61: {fileID: 1434641565}
+  - 114: {fileID: 1434641567}
   m_Layer: 0
   m_Name: LeftWall
   m_TagString: Untagged
@@ -535,7 +561,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1434641564}
   m_Enabled: 1
   m_Material: {fileID: 6200000, guid: 25dd3f642ef284c379b78e5b5cde18c2, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -552,6 +578,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1091615550}
   m_RootOrder: 2
+--- !u!114 &1434641567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1434641564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43c25b78d3a4b44418c74f4e76f33e6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2146334439
 GameObject:
   m_ObjectHideFlags: 0
