@@ -4,8 +4,7 @@ var moveUp : KeyCode;
 var moveDown : KeyCode;
 var speed : float = 10;
 
-function Update ()
-{
+function Update () {
     if (Input.GetKey(moveUp)) {
         GetComponent.<Rigidbody2D>().velocity.y = speed;
     }
