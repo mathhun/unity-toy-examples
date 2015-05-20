@@ -11,14 +11,10 @@ static function Score(wallName : String) {
     } else {
         playerScore02 += 1;
     }
-    Debug.Log(wallName);
-    Debug.Log(playerScore01);
-    Debug.Log(playerScore02);
-    Debug.Break();
 }
 
 function OnGUI() {
-    //GUI.skin = theSkin;
-    //GUI.Label(new Rect(Screen.width/2-150-12, 25, 100, 100), "" + playerScore01);
-    //GUI.Label(new Rect(Screen.width/2+150-12, 25, 100, 100), "" + playerScore02);
+    GUI.skin = theSkin;
+    GUI.Label(new Rect(Screen.width/2-150-12, 25, 100, 100), "" + playerScore01);
+    GUI.Label(new Rect(Screen.width/2+150-12, 25, 100, 100), "" + playerScore02);
 }
